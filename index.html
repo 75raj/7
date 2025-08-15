@@ -521,26 +521,27 @@
             margin-top: 2vw;
         }
 
-        #videoPopup {
-            display: none;
-            position: fixed;
-            bottom: 2vw;
-            right: 2vw;
-            width: clamp(80%, 90vw, 95%);
-            max-width: 90vw;
-            background: #000;
-            padding: 2vw;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-            z-index: 999;
-        }
-
-        #videoPopup video {
-            width: 100%;
-            border-radius: 10px;
-            display: none;
-        }
-
+      #videoPopup {
+    display: none;
+    position: fixed;
+    bottom: clamp(1vw, 2vw, 3vw);
+    right: clamp(1vw, 2vw, 3vw);
+    width: clamp(40%, 60vw, 70%); /* Auto-adjust width based on viewport */
+    max-width: 70vw;
+    background: #000;
+    padding: clamp(1vw, 2vw, 3vw);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    z-index: 999;
+}
+     #videoPopup video {
+    width: 100%;
+    max-height: clamp(30vh, 40vh, 50vh); /* Auto-adjust height based on viewport */
+    aspect-ratio: 16 / 9; /* Maintain standard video aspect ratio */
+    border-radius: 10px;
+    display: none;
+    object-fit: contain; /* Ensure video fits without distortion */
+}
         #openBtn {
             display: block;
             margin: 3vw auto;
