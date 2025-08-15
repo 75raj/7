@@ -1,0 +1,1236 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Message Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #000;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        /* Password Prompt Styling with Gradient Border and Text Border Effect */
+        #passwordPrompt {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #000;
+            padding: 2vw;
+        }
+
+        #passwordPrompt h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            background: linear-gradient(45deg, #ff0055, #00E0FF, #F87171, #9747ff);
+            background-size: 400% 400%;
+            animation: gradientMove 5s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow:
+                -1px -1px 0 #11e84a,
+                1px -1px 0 #b22929,
+                -2px 1px 0 #fff,
+                1px 1px 0 hsl(0, 61%, 42%),
+                0 0 10px rgba(85, 0, 255, 0.8);
+            margin-bottom: 20px;
+        }
+
+        #passwordInput {
+            padding: 2vw;
+            font-size: clamp(14px, 3vw, 16px);
+            width: clamp(200px, 60vw, 300px);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background: linear-gradient(#000, #000) padding-box,
+                linear-gradient(45deg, #ff0055, #00E0FF, #F87171, #9747ff) border-box;
+            background-size: 400% 400%;
+            animation: gradientMove 5s ease infinite;
+            color: #fff;
+            outline: none;
+        }
+
+        #submitPassword {
+            margin-top: 15px;
+            padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 25px);
+            font-size: clamp(14px, 3vw, 16px);
+            background: linear-gradient(45deg, #ff0055, #00E0FF, #F87171, #9747ff);
+            background-size: 400% 400%;
+            animation: gradientMove 5s ease infinite;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            text-shadow:
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000,
+                0 0 10px rgba(255, 255, 255, 0.8);
+            transition: transform 0.3s ease;
+        }
+
+        #submitPassword:hover {
+            transform: scale(1.05);
+        }
+
+        #errorMessage {
+            color: #ff0055;
+            margin-top: 15px;
+            font-size: clamp(12px, 2.5vw, 14px);
+            text-shadow: 0 0 5px #ff0055;
+            display: none;
+        }
+
+        #content {
+            display: none;
+            /* Hide content by default */
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Your existing styles (unchanged where not specified) */
+        .important-button {
+            background-color: #ff0055;
+            color: #1029e3;
+            padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 25px);
+            border: none;
+            border-radius: 10px;
+            font-size: clamp(14px, 3vw, 16px);
+            cursor: pointer;
+            box-shadow: 0 0 10px #1af970;
+            transition: 0.3s;
+        }
+
+        .important-button:hover {
+            background-color: #fff;
+            color: #ff0055;
+            box-shadow: 0 0 20px #000700;
+        }
+
+        .message-box {
+            display: none;
+            background: linear-gradient(135deg, #faf9ff, #1E3A8A, #323931, #EC4899, #16120d);
+            background-size: 400% 400%;
+            animation: gradientMove 10s ease infinite;
+            padding: 4vw;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            max-width: 90vw;
+            margin: 5vw auto;
+        }
+
+        .message span {
+            display: block;
+            margin-bottom: 2vw;
+            font-size: clamp(16px, 3.5vw, 18px);
+            line-height: 1.7;
+        }
+
+        .glow1 {
+            color: #ff0404;
+            text-shadow: 0 0 10px #19b63b;
+        }
+
+        .glow2 {
+            color: #37ff6c;
+            text-shadow: 0 0 10px #FF6D28;
+        }
+
+        .glow3 {
+            color: #9747ff;
+            text-shadow: 0 0 10px #b915ff;
+        }
+
+        .glow4 {
+            color: #005fbe;
+            text-shadow: 0 0 10px #FF007F;
+        }
+
+        .glow5 {
+            color: #026f93;
+            text-shadow: 0 0 10px #00E0FF;
+        }
+
+        .extra-message {
+            margin-top: 3vw;
+            font-size: clamp(14px, 3vw, 16px);
+            background: #000;
+            color: #fff;
+            padding: 3vw;
+            border-radius: 12px;
+            text-shadow: 0 0 5px #aaa;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .extra-message .color1 {
+            color: #d7a117;
+            font-weight: bold;
+        }
+
+        .extra-message .color2 {
+            color: #10B981;
+        }
+
+        .extra-message .color3 {
+            color: #60A5FA;
+        }
+
+        .extra-message .color4 {
+            color: #EC4899;
+        }
+
+        .extra-message .color5 {
+            color: #F87171;
+        }
+
+        .showmore-button,
+        .back-button {
+            margin-top: 3vw;
+            padding: clamp(8px, 2vw, 10px) clamp(16px, 4vw, 20px);
+            font-size: clamp(14px, 2.5vw, 16px);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .showmore-button {
+            background-color: #00E0FF;
+            color: #000;
+            box-shadow: 0 0 10px #00E0FF;
+        }
+
+        .back-button {
+            background-color: #F87171;
+            color: #fff;
+            box-shadow: 0 0 10px #F87171;
+        }
+
+        .last.message {
+            background: #ff00cc;
+            border: none;
+            padding: clamp(8px, 2vw, 10px) clamp(16px, 4vw, 20px);
+            color: rgb(0, 0, 0);
+            font-size: clamp(14px, 2.5vw, 16px);
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #0febff;
+            transition: background 0.3s ease;
+        }
+
+        .last.message:hover {
+            background: #d4ff15;
+        }
+
+        .message-box {
+            display: none;
+            margin-top: 3vw;
+            background: #111;
+            padding: 3vw;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #ff00cc88;
+        }
+
+        .message span {
+            display: block;
+            margin-bottom: 2vw;
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .message span:nth-child(n) {
+            animation-delay: calc(0.3s * var(--i));
+        }
+
+        .glow1 {
+            color: #ff6ec4;
+            text-shadow: 0 0 8px #ff6ec4;
+        }
+
+        .glow2 {
+            color: #fcff6c;
+            text-shadow: 0 0 8px #fcff6c;
+        }
+
+        .glow3 {
+            color: #6cfcff;
+            text-shadow: 0 0 8px #6cfcff;
+        }
+
+        .glow4 {
+            color: #bb6cff;
+            text-shadow: 0 0 8px #bb6cff;
+        }
+
+        .glow5 {
+            color: #6cff95;
+            text-shadow: 0 0 8px #6cff95;
+        }
+
+        .showmore-button {
+            margin-top: 2vw;
+            padding: clamp(6px, 1.5vw, 8px) clamp(12px, 3vw, 16px);
+            background-color: #0528f3;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .extra-message {
+            display: none;
+            margin-top: 2vw;
+            padding: 2vw;
+            background: #2b0035, #000000;
+            border-radius: 8px;
+        }
+
+        .extra-message p span {
+            opacity: 0;
+            display: inline-block;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .extra-message p span:nth-child(n) {
+            animation-delay: calc(0.2s * var(--j));
+        }
+
+        .back-button {
+            margin-top: 2vw;
+            padding: clamp(8px, 2vw, 10px) clamp(14px, 3vw, 18px);
+            background-color: rgb(251, 0, 255);
+            color: white;
+            border: 2px solid black;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px #00ff77aa;
+        }
+
+        .back-button:hover {
+            background-color: skyblue;
+            box-shadow: 0 0 20px #90ee90;
+        }
+
+        .color1 {
+            color: #ff0099;
+        }
+
+        .color2 {
+            color: #fcff6c;
+        }
+
+        .color3 {
+            color: #00fbff;
+        }
+
+        .color4 {
+            color: #bb6cff;
+        }
+
+        .color5 {
+            color: #6cff95;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 3vw;
+            max-width: 95vw;
+        }
+
+        .active {
+            display: flex;
+        }
+
+        .glow,
+        .glow1,
+        .glow2,
+        .glow3,
+        .glow4,
+        .glow5 {
+            font-weight: bold;
+            text-shadow: 0 0 8px #87CEEB;
+        }
+
+        .glow {
+            color: #fff704;
+        }
+
+        .glow1 {
+            color: #f90e3d;
+        }
+
+        .glow2 {
+            color: #5703ff;
+            text-shadow: 0 0 8px #00ff44;
+        }
+
+        .glow3 {
+            color: #ff0000;
+            text-shadow: 0 0 8px #69ffa0;
+        }
+
+        .glow4 {
+            color: #ff3c00;
+            text-shadow: 0 0 8px #e5ff00;
+        }
+
+        .glow5 {
+            color: #00e0ff;
+            text-shadow: 0 0 8px #00e0ff;
+        }
+
+        .btn-nav {
+            margin-top: 3vw;
+            display: flex;
+            gap: clamp(8px, 2vw, 10px);
+        }
+
+        button {
+            background-color: #923255;
+            color: #fff;
+            border: 2px solid #eeff00;
+            border-radius: 12px;
+            padding: clamp(8px, 2vw, 10px) clamp(16px, 4vw, 20px);
+            font-size: clamp(14px, 2.5vw, 16px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #57ffb6;
+            color: #000;
+            box-shadow: 0 0 10px #fff704, 0 0 20px #12d7c0;
+        }
+
+        .story-box {
+            background: #222;
+            border: 2px dashed #4fc3f7;
+            color: #4fc3f7;
+            padding: clamp(12px, 2.5vw, 15px);
+            margin-top: 3vw;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: 0.3s ease;
+        }
+
+        .story-box:hover {
+            background: #4fc3f7;
+            color: #000;
+        }
+
+        .glow-box-container {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .glow-box-container.show {
+            display: flex;
+        }
+
+        .glow-box {
+            background: #111;
+            border: 2px solid #4fc3f7;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #4fc3f7;
+            padding: clamp(15px, 3vw, 20px);
+            width: clamp(80%, 90vw, 95%);
+            max-width: 95vw;
+            line-height: 1.6;
+            position: relative;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        .toggle-btn,
+        .back-btn {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #4fc3f7;
+            padding: clamp(6px, 1.5vw, 8px) clamp(12px, 3vw, 16px);
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 2vw;
+            transition: 0.3s ease;
+            font-size: clamp(12px, 2.5vw, 14px);
+        }
+
+        .toggle-btn:hover,
+        .back-btn:hover {
+            background: #4fc3f7;
+            color: #000;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: clamp(8px, 2vw, 10px);
+            right: clamp(8px, 2vw, 10px);
+        }
+
+        #extraContent {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        #extraContent.show {
+            max-height: 1000px;
+            opacity: 1;
+            margin-top: 2vw;
+        }
+
+        #videoPopup {
+            display: none;
+            position: fixed;
+            bottom: 2vw;
+            right: 2vw;
+            width: clamp(80%, 90vw, 95%);
+            max-width: 90vw;
+            background: #000;
+            padding: 2vw;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        #videoPopup video {
+            width: 100%;
+            border-radius: 10px;
+            display: none;
+        }
+
+        #openBtn {
+            display: block;
+            margin: 3vw auto;
+            padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 25px);
+            font-size: clamp(14px, 3vw, 16px);
+            background-color: #ff0055;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #openBtn:hover {
+            background-color: #e6004c;
+        }
+
+        #closeBtn {
+            margin-top: 3vw;
+            padding: clamp(5px, 1.5vw, 6px) clamp(12px, 3vw, 15px);
+            font-size: clamp(12px, 2.5vw, 14px);
+            background-color: #444;
+            color: rgb(255, 0, 0);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #closeBtn:hover {
+            background-color: #11ff11;
+        }
+
+        #videoPasswordPrompt {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3vw;
+        }
+
+        #videoPasswordInput {
+            padding: 2vw;
+            font-size: clamp(14px, 2.5vw, 16px);
+            width: clamp(150px, 50vw, 200px);
+            border: 2px solid #4fc3f7;
+            border-radius: 8px;
+            background: #111;
+            color: #fff;
+            outline: none;
+        }
+
+        #submitVideoPassword {
+            margin-top: 2vw;
+            padding: clamp(6px, 1.5vw, 8px) clamp(16px, 3vw, 20px);
+            font-size: clamp(14px, 2.5vw, 16px);
+            background-color: #ff0055;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #submitVideoPassword:hover {
+            background-color: #e6004c;
+        }
+
+        #videoErrorMessage {
+            color: #ff0055;
+            margin-top: 2vw;
+            font-size: clamp(12px, 2.5vw, 14px);
+            text-shadow: 0 0 5px #ff0055;
+            display: none;
+        }
+
+        /* Caption section styles */
+        .caption {
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            margin: clamp(20px, 5vw, 30px) auto;
+            position: relative;
+            min-height: clamp(4rem, 10vw, 5rem);
+            word-wrap: break-word;
+            max-width: 95vw;
+        }
+
+        .word {
+            opacity: 0;
+            display: inline-block;
+            margin: 0 3px;
+            cursor: default;
+            font-weight: normal;
+            transition: opacity 0.4s ease;
+        }
+
+        .navigation {
+            margin-top: auto;
+            margin-bottom: 3vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(10px, 2.5vw, 15px);
+            flex-wrap: wrap;
+            max-width: 95vw;
+        }
+
+        .show-btn {
+            background-color: #923255;
+            color: #fff;
+            border: 2px solid #eeff00;
+            border-radius: 12px;
+            padding: clamp(8px, 2vw, 10px) clamp(16px, 4vw, 20px);
+            font-size: clamp(14px, 2.5vw, 16px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .show-btn:hover {
+            background-color: #57ffb6;
+            color: #000;
+            box-shadow: 0 0 10px #fff704, 0 0 20px #12d7c0;
+        }
+
+        .full-text {
+            display: none;
+            margin-top: 3vw;
+            padding: 3vw;
+            background-color: #111;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+            text-align: left;
+            line-height: 1.8rem;
+            font-size: clamp(14px, 2.5vw, 16px);
+        }
+
+        @media (max-width: 500px) {
+            .full-text {
+                font-size: clamp(12px, 2.5vw, 14px);
+            }
+        }
+
+        #message-container {
+            display: none;
+            background-color: #ffe7ff;
+            color: #000;
+            padding: 3vw;
+            border-radius: 15px;
+            margin-top: 3vw;
+        }
+
+        #toggleBtn {
+            background-color: #6dff2a;
+            color: #003cff;
+            border: 2px solid #ff006a;
+            padding: clamp(8px, 2vw, 10px) clamp(20px, 4vw, 25px);
+            font-size: clamp(14px, 2.5vw, 16px);
+            cursor: pointer;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        #toggleBtn:hover {
+            background-color: #04ff00;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Password Prompt -->
+    <div id="passwordPrompt">
+        <h2 class="gradient-text">Enter Password</h2>
+        <button onclick="toggleHint()">Hint</button>
+        <p id="hintText" style="display: none; font-size: clamp(12px, 2.5vw, 14px); margin-top: 2vw;">
+            <strong>
+                मैंने सबसे पहली बार आपको सर्च करने के लिए एक <span style="color: #e74c3c;">IP</span> दिया था, जो
+                <span style="color: #3498db;">http://192.168.00.000:0000/index.html</span> से शुरू होता है, तो उसी दिन का
+                <span style="color: #2ecc71;">पासवर्ड और तारीख</span> होती है। उसके बाद
+                <span style="color: #f1c40f;">@your seat number</span> डालना है। उदाहरण के लिए:
+                <span style="color: #9b59b6;">friday27-12-2008@57</span> — इसी
+                <span style="color: #e67e22;">फॉर्मेट</span> में एंटर करना होता है।
+            </strong>
+            <br><br>
+            <strong>
+                English: When I first gave you an <span style="color: #e74c3c;">IP</span> to search, which starts with
+                <span style="color: #3498db;">http://192.168.00.000:0000/index.html</span>, the
+                <span style="color: #2ecc71;">password and date</span> are based on that same day. After that, you need
+                to enter <span style="color: #f1c40f;">@your seat number</span>. For example:
+                <span style="color: #9b59b6;">friday27-12-2008@57</span> — it must be entered in this exact
+                <span style="color: #e67e22;">format</span>.
+            </strong>
+            <br><br>
+            <strong style="font-size: clamp(14px, 3vw, 16px);">
+                <span style="color: #FF4500;">इतना</span> तो
+                <span style="color: #1E90FF;">दिमाग</span>
+                <span style="color: #32CD32;">तेज</span> होना ही चाहिए,
+                <span style="color: #FFD700;">इतना</span> तेज तो
+                <span style="color: #FF69B4;">हम क्लास 6</span> में थे!
+            </strong>
+        </p>
+        <input type="text" id="passwordInput" placeholder="Enter password" />
+        <button id="submitPassword" onclick="checkPassword()">Submit</button>
+        <p id="errorMessage">Incorrect password. Please try again.</p>
+    </div>
+
+    <!-- Main Content (Hidden by Default) -->
+    <div id="content">
+        <button class="last message" onclick="showMessageBox()">last message ise last me see</button>
+        <div class="message-box" id="messageBox">
+            <div class="message">
+                <span class="glow5">At first, I started coding just to look cool in front of you.</span>
+                <span class="glow4">But now, I’m actually enjoying it.</span>
+                <span class="glow2">I’ve written over 1800 line code—just for you.</span>
+                <span class="glow3">I covered a 30-hour video course in just 6 days to make this.</span>
+                <span class="glow4">And honestly, this is just 5% of what there is to learn in coding.</span>
+                <span class="glow5">There’s so much more I want to say...</span>
+                <span class="glow4">But above all, I want you to know this:</span>
+                <span class="glow3">I truly believe that because of me,</span>
+                <span class="glow4">your studies won’t be affected even by 0.1%.</span>
+                <span class="glow5">And neither will mine.</span>
+                <p>
+                    <span class="color1">I’m sorry that everything isn’t arranged properly.</span><br>
+                    <span class="color2">The reason is that I’ve been writing this code for the past 5 days.</span><br>
+                    <span class="color3">First, I wrote the basic HTML structure.</span><br>
+                    <span class="color4">Then I added CSS.</span><br>
+                    <span class="color5">Then I added JavaScript.</span><br>
+                    <span class="color1">Later, when you came into the picture, I added many more features and elements.</span><br>
+                    <span class="color2">So, because of all these additions, some parts may seem a bit unorganized.</span><br>
+                    <span class="color3">But if you go through it slowly, step by step, you won’t face any major problems.</span><br>
+                    <span class="color4">If something seems off or doesn’t work properly, just try refreshing the page once —</span><br>
+                    <span class="color5">that usually fixes the issue.</span>
+                </p>
+            </div>
+            <button class="showmore-button" onclick="showExtraMessage(event)">Show More</button>
+            <div class="extra-message" id="extraMessage">
+                <p><span class="color1">The most important thing I want to tell you is this:</span><br>
+                    <span class="color2">I truly believe from the bottom of my heart</span> that because of me,
+                    <span class="color3">your studies won’t be affected even by 0.1%</span>, and <span class="color4">neither will mine</span>.
+                </p>
+                <p><span class="color5">Everything else I wanted to say, I’ve written clearly above.</span><br>
+                    If you still have any questions in your mind, <span class="color2">feel free to ask</span>.<br>
+                    If you want, you can even <span class="color1">give me a final warning</span>.<br>
+                    After that, <span class="color4">I swear on my life</span> — I will never say anything to you again, and <span class="color5">I will never meet you in Bodhgaya</span> either.</p>
+                <p>I’ve received <span class="color3">permission from home</span> to go to Patna.<br>
+                    Now, whenever we feel like it, <span class="color2">we can go to Patna</span>.
+                    Until then, <span class="color5">I’ll stay here (in Bodhgaya) for 1–2 more years</span>.</p>
+                <button class="back-button" onclick="goBack()">← Back</button>
+            </div>
+        </div>
+
+        <div class="page active" id="page1">
+            <div class="message-box">
+                <p><span class="glow">I understand that your parents </span><span class="glow1">trust you</span>.</p>
+                <p>And I <span class="glow2">respect that deeply</span>. That’s why I’m saying this <span class="glow3">calmly</span> and <span class="glow4">carefully</span>...</p>
+                <p><span class="glow4">Yaar</span> <span class="glow2">pure</span> <span class="glow5">5 hour</span> <span class="glow3">lage hai</span> <span class="glow1"><br>don’t complain</span>.</p>
+                <p>Please just <span class="glow5">read this whole message once</span>—no rush, no pressure.</p>
+                <p>It’s not long. This is just a <span class="glow1">demo</span> — a glimpse of my thoughts.</p>
+                <p>Because I don’t have your <span class="glow2">permission</span>, I’m not writing <span class="glow3">everything right now</span>.</p>
+            </div>
+            <h2 class="glow">Please don’t complain.</h2>
+            <p>
+                <span style="color: rgb(156, 249, 130);">It’s better</span>
+                <span style="color: rgb(167, 255, 167);">to take a risk once</span>
+                <span style="color: orange;">than to live life</span>
+                <span style="color: rgb(255, 29, 29);">with regret.</span>
+            </p>
+            <div style="background: linear-gradient(to right, #000000, #d8e9cc); padding: clamp(8px, 2vw, 10px); border-radius: 10px;">
+                <p>
+                    <span style="color: rgb(255, 70, 70);">I can't talk to anyone</span>
+                    <span style="color: rgb(255, 17, 168);">because if someone refuses in front of me, it really hurts</span>
+                    <span style="color: rgb(0, 119, 255);">and makes me overthink a lot.</span>
+                </p>
+            </div>
+            <p>I want all my work done — no matter how small the task is.<br>
+                I start everything on Sunday, and in my life, 80% of the things I begin end up successful.</p>
+            <p>But the day we planned to talk, you were absent.<br>
+                Today is neither my favorite day… nor a favorite date.</p>
+            <div class="btn-nav">
+                <button onclick="nextPage()">Next ⟶</button>
+                <button class="back-btn" onclick="goBack()">← Back</button>
+            </div>
+        </div>
+
+        <div class="page" id="page2">
+            <h3 class="glow1">Now, here are my direct questions to you:</h3>
+            <p>What’s your name?</p>
+            <p>How many more days will you stay in the library?</p>
+            <p>In this week — Yes or No?</p>
+            <p>Not now, but in the future — Yes or No?</p>
+            <p>Or is it never?</p>
+            <p>not possible</p>
+            <div class="story-box" onclick="document.getElementById('storyPopup').classList.add('show')">Friend Story — Click to Read</div>
+            <button id="openBtn" onclick="openVideoPopup()">Open Video</button>
+            <div id="videoPopup">
+                <div id="videoPasswordPrompt">
+                    <h3>Enter Video Password</h3>
+                    <input type="text" id="videoPasswordInput" placeholder="Enter video password" />
+                    <button id="submitVideoPassword" onclick="checkVideoPassword()">Submit</button>
+                    <p id="videoErrorMessage">Incorrect password. Please try again.</p>
+                </div>
+                <video id="myVideo" controls>
+                    <source src="1.mp4" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                </video>
+                <button id="closeBtn" class="back-btn" onclick="goBack()">Close</button>
+            </div>
+            <div class="btn-nav">
+                <button onclick="prevPage()">⟵ Previous</button>
+                <button onclick="nextPage()">Next ⟶</button>
+                <button class="back-btn" onclick="goBack()">← Back</button>
+            </div>
+        </div>
+
+        <div class="glow-box-container" id="storyPopup">
+            <div class="glow-box">
+                <button class="back-btn" onclick="goBack()">← Close</button>
+                <p><span class="glow1">"Whether You Say Yes or No — It Doesn’t Matter Anymore..."</span></p>
+                <p>Honestly — it doesn’t even affect me <span class="glow2">0.1%</span> whether you say <span class="glow3">yes</span> or <span class="glow4">no</span>.</p>
+                <p><span class="glow5">Why?</span><br>Because once, I had a <span class="glow2">friend</span> with whom I shared such a <span class="glow3">deep connection</span> —</p>
+                <div id="extraContent">
+                    <p style="font-size: clamp(14px, 2.5vw, 16px); font-family: 'Segoe UI', sans-serif; line-height: 1.8;">
+                        We <span style="color: #27ae60;">returned</span> from <span style="color: #2980b9;">school</span> and spent the entire day <span style="color: #f39c12;">together</span>...<br>
+                        No <span style="color: #c0392b;">distance</span>. No <span style="color: #c0392b;">breaks</span>. Just <span style="color: #9b59b6;">us</span>.<br><br>
+                        But after <span style="color: #e67e22;">3 years</span>, something <span style="color: #e74c3c;">happened</span>...<br>
+                        It even reached our <span style="color: #34495e;">homes</span>...<br><br>
+                        A lot <span style="color: #2ecc71;">changed</span>.<br>
+                        Two more people <span style="color: #e84393;">entered</span> between <span style="color: #9b59b6;">us</span>.<br>
+                        One <span style="color: #3498db;">supported</span> me, the other supported him.<br>
+                        And we were <span style="color: #e74c3c;">separated</span>.<br><br>
+                        I <span style="color: #16a085;">tried</span> to fix it — but he never <span style="color: #f1c40f;">understood</span>.<br><br>
+                        That was the first time I <span style="color: #8e44ad;">cried</span> — for a <span style="color: #e84393;">friend</span>.<br><br>
+                        Since then, I’ve stayed <span style="color: #2bf1ff;">alone</span>.<br>
+                        I don’t talk to <span style="color: #07ff20;">anyone</span> anymore.<br>
+                        I don’t even know the names of my <span style="color: #0055aa;">neighbors</span>.<br>
+                        And I don’t <span style="color: #d35400;">care</span> to know them either.
+                    </p>
+                </div>
+                <button class="toggle-btn" onclick="toggleText()" id="toggleBtn">Show More</button>
+            </div>
+        </div>
+
+        <div id="captionBox" class="caption"></div>
+        <div class="navigation">
+            <button onclick="prevCaption()">⟵ Previous</button>
+            <button id="stopBtn" onclick="toggleAuto()">⏸ Stop</button>
+            <button onclick="nextCaption()">Next ⟶</button>
+            <button class="back-btn" onclick="goBack()">← Back</button>
+        </div>
+
+        <div class="message-box">
+            <p>I understand that your parents <span class="glow1">trust you</span>.</p>
+            <p>And I <span class="glow2">respect that deeply</span>. That’s why I’m saying this <span class="glow3">calmly</span> and <span class="glow4">carefully</span>...</p>
+            <p>Please just <span class="glow5">read this whole message once</span>—no rush, no pressure.</p>
+            <p>It’s not long. This is just a <span class="glow1">demo</span> — a glimpse of my thoughts.</p>
+            <p>Because I don’t have your <span class="glow2">permission</span>, I’m not writing <span class="glow3">everything right now</span>.</p>
+        </div>
+        <button class="show-btn" onclick="showFullText()">📩 Show Full Message</button>
+        <div id="fullText" class="full-text">
+            🛑 <span class="glow1">Important Request</span> – <span class="glow2">Please don’t complain</span>. Everyone deserves a <span class="glow3">chance</span>.<br><br>
+            I respect everyone. I’m not here to hurt or cross limits.<br><br>
+            <span class="glow1">trust you</span>.<br>
+            And I <span class="glow2">respect that deeply</span>. That’s why I’m saying this <span class="glow3">calmly</span> and <span class="glow4">carefully</span>...<br><br>
+            <button id="toggleBtn" onclick="toggleMessage()">5days click here 2 times</button>
+            <div id="message-container">
+                <p>There’s a lot I want to say…</p>
+                <p>But I <span class="glow">can’t</span> —</p>
+                <p>Not because I don’t <span class="glow">trust</span> you,</p>
+                <p>But because I don’t have your <span class="glow">permission</span>.</p>
+                <p>And yes… some of it is my own <span class="glow">privacy</span>,</p>
+                <p>My own <span class="glow">space</span>, my own <span class="glow">reasons</span>.</p>
+                <p>If I ever <span class="glow">disturbed</span> you because of me, I’m truly <span class="glow">sorry</span>.</p>
+                <p>And <span class="glow">thank you so much</span> for giving me your <span class="glow">charger</span> on <span class="glow">27th June</span> — I really appreciate it.</p>
+                <h2><span class="glow">About Me – </span></h2>
+                <p>I'm the kind of person who doesn’t <span class="glow">trust</span> easily, nor do I connect with people quickly.</p>
+                <p>In my entire 17 years of life, I’ve made only 7 <span class="glow">true friends</span> — 3 from CBSE, 3 from Bihar Board, and 1 from my neighborhood.</p>
+                <p>Out of those, I now feel truly <span class="glow">connected</span> to only 3. The rest? No strong bond remains.</p>
+                <p>And honestly, I don’t even feel like talking to new people anymore.</p>
+                <p>I don’t mix with people easily — whether it’s at the <span class="glow">library</span> or home.</p>
+                <p>I usually stay alone in my room. I only go to the library just for the sake of it… not because my heart wants to.</p>
+                <p>Even if I start talking to someone, it takes me a long time to <span class="glow">connect</span> with them deeply.</p>
+                <p>There was no girl before, and there won’t be one after either. <span class="glow">You are my first and last.</span></p>
+                <p>Even if you say "no," I won’t look at anyone else — at least not for the next four years.</p>
+                <p>I’m the kind of person who can give up anything — no matter how valuable or <span class="glow">addictive</span> it may be.</p>
+                <p>There's even a story behind that, which I can’t share due to <span class="glow">privacy</span>… it was about a boy, not a girl.</p>
+                <p>Movies, songs, social media, even people — nothing <span class="glow">controls</span> me.</p>
+                <p>I’m not addicted to anything.</p>
+                <p>I respect everyone — and especially your <span class="glow">privacy</span>.</p>
+                <p>I’ve never taken any photo of you, from any app or angle.</p>
+                <p>I never lie. Everything I’ve said is <span class="glow">true</span>.</p>
+                <p>Yes, once — out of curiosity — I did try to access the library's CCTV.</p>
+                <p>But the same day, my laptop crashed... because I forgot to use the pendrive.</p>
+                <p>Since then, I never tried again.</p>
+                <p>That’s all I can say…</p>
+                <p><span class="glow">Thank you.</span></p>
+                <button class="back-btn" onclick="goBack()">← Back</button>
+            </div>
+            <br><br><br> click on 5 day for more<br>
+            Please just <span class="glow5">read this whole message once</span>—no rush, no pressure.<br>
+            This is just a <span class="glow1">demo</span> — a glimpse of my thoughts.<br>
+            Because I don’t have your <span class="glow2">permission</span>, I’m not writing <span class="glow3">everything right now</span>.<br><br>
+            Just once, please <span class="glow5">forgive</span> me if I made you uncomfortable.<br>
+            This is a <span class="glow3">genuine request</span> — please don’t complain.<br><br>
+            Hi, I’m <span class="glow4">name nahi bat sakta</span>. I made this website <span class="glow1">honestly</span> to talk to you.<br>
+            I don’t even know your real name — just a <span class="glow2">wish</span> to know.<br><br>
+            You don’t have to say your full name. Just tell me — is the first letter <span class="glow5">R</span>, <span class="glow5">L</span>, <span class="glow5">S</span>, <span class="glow5">P</span>, <span class="glow5">A</span>, or <span class="glow5">B</span>?<br>
+            If that feels personal, it’s okay. You can say <span class="glow2">‘no ’</span>.<br><br>
+            💙 <span class="glow1">Main Baat</span>: I feel a small <span class="glow2">attraction</span> towards you.<br>
+            This isn’t love — but your <span class="glow3">vibe</span> and presence feels nice.<br><br>
+            So I’m asking, with respect: <span class="glow4">Is this attraction one-sided?</span><br>
+            You can simply reply: <span class="glow5">Yes</span> or <span class="glow5">No</span>.<br>
+            Just like I’m being honest, I hope you’ll share your heart too. 💙<br><br>
+            And last — <span class="glow1">please don’t complain</span>. Honest, respectful, and waiting.
+            <button class="back-btn" onclick="goBack()">← Back</button>
+        </div>
+    </div>
+
+    <script>
+        // Password Check Script
+        const errorMessages = [
+            "Chal nikal, tumse password crack nahi hoga!",
+            "Yeh tumhare bas ki baat nahi… try mat kar, time barbaad hai!",
+            "Itna bhi asaan nahi hai… hacker banna hai kya?",
+            "Ab toh sharam aa rahi hogi!",
+            "Kyu? Kise ki chat dekhna chahte ho?",
+            "Ho gaya na insult? Password tumhare aukaat se bahar hai!",
+            "Bhai, password crack nahi hota… syllabus crack kar C**!"
+        ];
+
+        const colors = [
+            "#FF0020", // Red
+            "#00FF00", // Green
+            "#0000FF", // Blue
+            "#FFFF00", // Yellow
+            "#FF00FF", // Magenta
+            "#00FFFF", // Cyan
+            "#FFA500"  // Orange
+        ];
+
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const correctPasswords = ['45', '75', '95'];
+            const errorMessage = document.getElementById('errorMessage');
+            const passwordPrompt = document.getElementById('passwordPrompt');
+            const content = document.getElementById('content');
+
+            if (correctPasswords.includes(password)) {
+                passwordPrompt.style.display = 'none';
+                content.style.display = 'block';
+            } else {
+                const randomIndex = Math.floor(Math.random() * errorMessages.length);
+                errorMessage.textContent = errorMessages[randomIndex];
+                let textColorIndex = Math.floor(Math.random() * colors.length);
+                let borderColorIndex;
+                do {
+                    borderColorIndex = Math.floor(Math.random() * colors.length);
+                } while (borderColorIndex === textColorIndex);
+                const textColor = colors[textColorIndex];
+                const borderColor = colors[borderColorIndex];
+                errorMessage.style.color = textColor;
+                errorMessage.style.textShadow = `0 0 5px ${textColor}`;
+                errorMessage.style.outline = `1px solid ${borderColor}`;
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        document.getElementById('passwordInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Hint Toggle Script
+        function toggleHint() {
+            const hint = document.getElementById('hintText');
+            hint.style.display = hint.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Message Box and Extra Message Toggle
+        function showMessageBox() {
+            const msgBox = document.getElementById("messageBox");
+            msgBox.style.display = (msgBox.style.display === "block") ? "none" : "block";
+        }
+
+        function showExtraMessage(event) {
+            const extra = document.getElementById("extraMessage");
+            const btn = event.target;
+            if (extra.style.display === "block") {
+                extra.style.display = "none";
+                btn.textContent = "Show More";
+            } else {
+                extra.style.display = "block";
+                btn.textContent = "Show Less";
+            }
+        }
+
+        // Page Navigation
+        let currentPage = 1;
+
+        function showPage(n) {
+            document.querySelectorAll(".page").forEach((page, index) => {
+                page.classList.remove("active");
+                if (index === n - 1) page.classList.add("active");
+            });
+        }
+
+        function nextPage() {
+            if (currentPage < 2) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        }
+
+        // Back Button Logic
+        function goBack() {
+            const storyPopup = document.getElementById('storyPopup');
+            const videoPopup = document.getElementById('videoPopup');
+            const extraMessage = document.getElementById('extraMessage');
+            const fullText = document.getElementById('fullText');
+            const messageContainer = document.getElementById('message-container');
+
+            if (storyPopup.classList.contains('show')) {
+                storyPopup.classList.remove('show');
+            } else if (videoPopup.style.display === 'block') {
+                videoPopup.style.display = 'none';
+                document.getElementById('myVideo').style.display = 'none';
+                document.getElementById('videoPasswordPrompt').style.display = 'flex';
+                document.getElementById('videoErrorMessage').style.display = 'none';
+                document.getElementById('videoPasswordInput').value = '';
+            } else if (extraMessage.style.display === 'block') {
+                extraMessage.style.display = 'none';
+                document.querySelector('.showmore-button').textContent = 'Show More';
+            } else if (fullText.style.display === 'block') {
+                fullText.style.display = 'none';
+            } else if (messageContainer.style.display === 'block') {
+                messageContainer.style.display = 'none';
+                document.getElementById('toggleBtn').textContent = '5 days before';
+            } else if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        }
+
+        // Story Popup Toggle
+        function toggleText() {
+            const extra = document.getElementById("extraContent");
+            const btn = document.getElementById("toggleBtn");
+            extra.classList.toggle("show");
+            btn.innerText = extra.classList.contains("show") ? "Show Less" : "Show More";
+        }
+
+        // Video Password Check
+        function openVideoPopup() {
+            document.getElementById('videoPopup').style.display = 'block';
+            document.getElementById('videoPasswordPrompt').style.display = 'flex';
+            document.getElementById('myVideo').style.display = 'none';
+        }
+
+        function checkVideoPassword() {
+            const password = document.getElementById('videoPasswordInput').value;
+            const correctPassword = '28';
+            const videoErrorMessage = document.getElementById('videoErrorMessage');
+            const video = document.getElementById('myVideo');
+            const videoPasswordPrompt = document.getElementById('videoPasswordPrompt');
+
+            if (password === correctPassword) {
+                videoPasswordPrompt.style.display = 'none';
+                video.style.display = 'block';
+                video.play();
+            } else {
+                videoErrorMessage.textContent = 'Incorrect password. Please try again.';
+                videoErrorMessage.style.display = 'block';
+            }
+        }
+
+        document.getElementById('videoPasswordInput')?.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkVideoPassword();
+            }
+        });
+
+        // Caption Animation
+        const captions = [
+            "🛑 <span class='glow'>Important Request</span> – <span class='glow'>Please don’t complain</span>. Everyone deserves a <span class='glow'>chance</span>.",
+            "I <span class='glow'>respect</span> everyone. I’m not here to hurt or cross limits.",
+            "Just once, please <span class='glow'>forgive</span> me if I made you uncomfortable.",
+            "This is a <span class='glow'>genuine request</span> — <span class='glow'>please don’t complain</span>.",
+            "Hi, I’m name. I made this website <span class='glow'>honestly</span> to talk to you.",
+            "I don’t even know your real name — just a <span class='glow'>wish</span> to know.",
+            "You don’t have to say your full name. Just tell me — is the first letter R, L, S, P, A, or B?",
+            "If that feels personal, it’s okay. You can say <span class='glow'>‘no comment’</span>.",
+            "💙 <span class='glow'>Main Baat</span>: I feel a small <span class='glow'>attraction</span> towards you.",
+            "This isn’t love — but your <span class='glow'>vibe</span> and presence feels nice.",
+            "So I’m asking, with respect: <span class='glow'>Is this attraction one-sided?</span>",
+            "You can simply reply: <span class='glow'>Yes</span> or <span class='glow'>No</span>.",
+            "Just like I’m being honest, I hope you’ll share your heart too. 💙",
+            "and last — <span class='glow'>please do not complain</span>. Honest, respectful, and waiting."
+        ];
+
+        let index = 0;
+        let autoInterval;
+        let isAuto = true;
+        const captionBox = document.getElementById('captionBox');
+        const stopBtn = document.getElementById('stopBtn');
+        const glowClasses = ['glow1', 'glow2', 'glow3', 'glow4', 'glow5'];
+
+        function showCaption() {
+            captionBox.innerHTML = '';
+            const html = captions[index];
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            const nodes = Array.from(tempDiv.childNodes);
+            let wordsArray = [];
+
+            nodes.forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    node.textContent.trim().split(/\s+/).forEach(w => {
+                        if (w) wordsArray.push({ text: w, glow: false });
+                    });
+                } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'SPAN') {
+                    const glowClass = getRandomGlowClass();
+                    node.textContent.trim().split(/\s+/).forEach(w => {
+                        if (w) wordsArray.push({ text: w, glow: true, glowClass });
+                    });
+                }
+            });
+
+            wordsArray.forEach((wordObj, i) => {
+                const span = document.createElement('span');
+                span.textContent = wordObj.text + ' ';
+                span.classList.add('word');
+                if (wordObj.glow) span.classList.add(wordObj.glowClass);
+                span.style.transitionDelay = (i * 0.15) + 's';
+                captionBox.appendChild(span);
+                setTimeout(() => span.style.opacity = '1', 50 + i * 150);
+            });
+        }
+
+        function getRandomGlowClass() {
+            return glowClasses[Math.floor(Math.random() * glowClasses.length)];
+        }
+
+        function nextCaption() {
+            if (index < captions.length - 1) {
+                index++;
+                showCaption();
+            }
+        }
+
+        function prevCaption() {
+            if (index > 0) {
+                index--;
+                showCaption();
+            }
+        }
+
+        function toggleAuto() {
+            if (isAuto) {
+                clearInterval(autoInterval);
+                isAuto = false;
+                stopBtn.textContent = '▶ Resume';
+            } else {
+                autoInterval = setInterval(nextCaption, 5000);
+                isAuto = true;
+                stopBtn.textContent = '⏸ Stop';
+            }
+        }
+
+        function showFullText() {
+            document.getElementById('fullText').style.display = 'block';
+            alert("🙏 Please don’t complain, please. I’ve shared this with full honesty. Click OK and see all ");
+        }
+
+        function toggleMessage() {
+            const message = document.getElementById("message-container");
+            const button = document.getElementById("toggleBtn");
+            if (message.style.display === "none") {
+                message.style.display = "block";
+                button.innerText = "Show Less";
+            } else {
+                message.style.display = "none";
+                button.innerText = "5 days before";
+            }
+        }
+
+        showCaption();
+        autoInterval = setInterval(nextCaption, 5000);
+    </script>
+</body>
+</html>
