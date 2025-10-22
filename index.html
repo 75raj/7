@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Login</title>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #000;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* SINGLE VIDEO BACKGROUND */
+    .video-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+    }
+
+    .video-background video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* NO ROUND - FULL SCREEN */
+    }
+
+    .login-container {
+        width: 340px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        border-radius: 20px;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        color: white;
+        animation: fadeInUp 1s ease;
+        z-index: 10;
+        position: relative;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .login-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: 1px;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 25px;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 12px 40px 12px 12px;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    .input-group label {
+        position: absolute;
+        top: 50%;
+        left: 12px;
+        color: #ddd;
+        transform: translateY(-50%);
+        pointer-events: none;
+        transition: 0.3s;
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+        top: -10px;
+        left: 8px;
+        font-size: 12px;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0 5px;
+        border-radius: 5px;
+    }
+
+    .input-group .fa {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    .error {
+        text-align: center;
+        color: #ff4d4d;
+        font-size: 14px;
+        margin-top: 10px;
+        display: none;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 400px) {
+        .login-container {
+            width: 90%;
+            padding: 30px 20px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- SINGLE VIDEO BACKGROUND -->
+<div class="video-background">
+    <video src="V (1).mp4" muted autoplay loop></video>
+</div>
+
+<div class="login-container">
+    <h2>Enter Password</h2>
+    <H4>USE WIFE </H4>
+    <form onsubmit="return checkPassword(event)">
+        <div class="input-group">
+            <input type="password" id="password" placeholder=" " required>
+            <label for="password">Password</label>
+            <i class="fa fa-lock"></i>
+        </div>
+        <button type="submit">Login</button>
+        <div class="error" id="error">Incorrect password</div>
+    </form>
+</div>
+
+<script>
+function checkPassword(e) {
+    e.preventDefault();
+    const pass = document.getElementById("password").value;
+    const error = document.getElementById("error");
+    
+    // 3 VALID PASSWORDS
+    const validPasswords = ["yn@27", "7", "27"];
+    
+    if (validPasswords.includes(pass)) {
+        window.location.href = "https://75raj.github.io/L1/";
+    } else {
+        error.style.display = "block";
+        setTimeout(() => error.style.display = "none", 2000);
+    }
+}
+
+// START VIDEO AUTOMATICALLY
+document.addEventListener('DOMContentLoaded', function() {
+    const video = document.querySelector('video');
+    video.play().catch(e => console.log('Video play failed:', e));
+});
+</script>
+
+</body>
+</html>
